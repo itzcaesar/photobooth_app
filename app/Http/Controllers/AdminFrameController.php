@@ -31,8 +31,33 @@ class AdminFrameController extends Controller
             'active' => true,
         ]);
 
-        return redirect('/admin')->with('success', 'Frame berhasil ditambahkan!');
+        return redirect()->route('admin.frames.index')->with('success', 'Frame berhasil ditambahkan!');
     }
+
+    // [KODE BARU: Menampilkan Form Edit]
+    public function edit($id)
+    {
+        $frame = Frame::findOrFail($id);
+        return view('admin.frames.edit', compact('frame'));
+    }
+
+    // [KODE BARU: Menyimpan Perubahan]
+    public function update(Request $request, $id)
+    {
+        // 1. Validasi input
+        $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+
+        // 2. Cari dan Update frame
+        $frame = Frame::findOrFail($id);
+        $frame->name = $request->name;
+        $frame->save();
+
+        // 3. Redirect
+        return redirect()->route('admin.frames.index')->with('success', 'Nama frame **' . $frame->name . '** berhasil diperbarui!');
+    }
+
 
     // delete frame
     public function destroy($id)
@@ -47,6 +72,6 @@ class AdminFrameController extends Controller
         // hapus database
         $frame->delete();
 
-        return redirect('/admin')->with('success', 'Frame berhasil dihapus!');
+        return redirect()->route('admin.frames.index')->with('success', 'Frame berhasil dihapus!');
     }
 }

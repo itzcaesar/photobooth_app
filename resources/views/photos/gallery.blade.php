@@ -4,7 +4,7 @@
 <h4>My Photos</h4>
 
 @if($photos->count() == 0)
-  <p>Kamu belum punya foto.</p>
+  <p>You don't have any photos yet.</p>
 @endif
 
 <div class="row">

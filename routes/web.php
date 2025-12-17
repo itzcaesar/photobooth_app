@@ -28,11 +28,6 @@ Route::post('/photos', [PhotoController::class, 'store'])->name('photos.store');
 Route::get('/photos', [GalleryController::class, 'index'])->name('photos.index');
 Route::get('/photos/{id}', [GalleryController::class, 'show'])->name('photos.show');
 
-// Admin routes (not implemented fully yet) will be under /admin manually later.
-// Route::get('/admin', [App\Http\Controllers\AdminFrameController::class, 'index']);
-// Route::post('/admin/frames', [App\Http\Controllers\AdminFrameController::class, 'store']);
-// Route::delete('/admin/frames/{id}', [App\Http\Controllers\AdminFrameController::class, 'destroy']);
-
 // Edit & Update
 Route::get('/photos/{id}/edit', [PhotoController::class, 'edit'])->name('photos.edit');
 Route::put('/photos/{id}', [PhotoController::class, 'update'])->name('photos.update');
@@ -49,7 +44,14 @@ Route::get('/admin/logout', [AdminAuthController::class, 'logout'])->name('admin
 
 // ADMIN AREA (DILINDUNGI)
 Route::middleware('admin.auth')->group(function () {
-    Route::get('/admin', [AdminFrameController::class, 'index']);
-    Route::post('/admin/frames', [AdminFrameController::class, 'store']);
-    Route::delete('/admin/frames/{id}', [AdminFrameController::class, 'destroy']);
+    // [PERBAIKAN: TAMBAHKAN NAMA RUTE UNTUK INDEX, STORE, & DESTROY]
+    Route::get('/admin', [AdminFrameController::class, 'index'])->name('admin.frames.index'); // <-- TAMBAHKAN INI
+    Route::post('/admin/frames', [AdminFrameController::class, 'store'])->name('admin.frames.store'); // <-- TAMBAHKAN INI (SOLUSI ERROR)
+    Route::delete('/admin/frames/{id}', [AdminFrameController::class, 'destroy'])->name('admin.frames.destroy'); // <-- TAMBAHKAN INI
+    
+    // Rute Edit dan Update (Sudah benar)
+    Route::get('/admin/frames/{id}/edit', [AdminFrameController::class, 'edit'])->name('admin.frames.edit'); 
+    Route::put('/admin/frames/{id}', [AdminFrameController::class, 'update'])->name('admin.frames.update');
 });
+
+Route::post('/photos/collage', [PhotoController::class, 'storeCollage'])->name('photos.storeCollage');
