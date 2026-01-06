@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Admin extends Model
 {
     protected $fillable = [
-        'email', // Ganti username menjadi email
+        'username', // Ganti username menjadi email
         'password',
     ];
 }

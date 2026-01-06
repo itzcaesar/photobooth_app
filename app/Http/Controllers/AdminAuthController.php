@@ -22,12 +22,12 @@ class AdminAuthController extends Controller
     {
         $req->validate([
             // Ganti username ke email dan pastikan formatnya email
-            'email' => 'required|email|unique:admins',
+            'username' => 'required|unique:admins',
             'password' => 'required|min:5',
         ]);
 
         Admin::create([
-            'email' => $req->email, // Sesuaikan kolom database
+            'username' => $req->username, // Sesuaikan kolom database
             'password' => Hash::make($req->password),
         ]);
 
@@ -37,7 +37,7 @@ class AdminAuthController extends Controller
     public function login(Request $req)
     {
         // Cari admin berdasarkan email, bukan username
-        $admin = Admin::where('email', $req->email)->first();
+        $admin = Admin::where('username', $req->username)->first();
 
         if (!$admin || !Hash::check($req->password, $admin->password)) {
             return back()->with('error', 'Invalid login');
